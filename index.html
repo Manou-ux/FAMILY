@@ -819,6 +819,54 @@
     color: var(--accent-color);
 }
 
+
+/* MODALE SIMPLE */
+#simpleModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.simpleModalContent {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.simpleModalContent h2 {
+    margin-bottom: 1rem;
+    color: #1a365d;
+}
+
+.simpleModalContent p {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.5;
+}
+
+.simpleModalContent button {
+    margin-top: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    background: #1a365d;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
     </style>
 </head>
 <body>
@@ -929,6 +977,9 @@
 <footer class="footer">
     <div class="footer-content">
         <div class="footer-top">
+            <p class="footer-instruction">
+                    <i class="fas fa-mouse-pointer"></i> Cliquez sur une personne pour voir ses détails
+            </p>
             <p>
                 <i class="fas fa-mouse"></i>
                 Utilisez la molette de la souris, les boutons 
@@ -939,18 +990,24 @@
         <hr>
 
         <div class="footer-bottom">
-            <p>
-                Arbre Généalogique <strong>Famille RAJOSVAH</strong> © 2026
-            </p>
             <p class="footer-dev">
-                Développé par <strong>RAJOSVAH Manohisoa</strong>
+                © 2026 Développé par <strong>RAJOSVAH Manohisoa</strong>
             </p>
             <p class="footer-contact">
+                Contact : 
+                <i class="fab fa-facebook"></i>
+                <a href="https://facebook.com/manou.rajosvah" target="_blank">
+                    Manou Rajosvah
+                </a>
+                &nbsp; | &nbsp;
                 <i class="fas fa-envelope"></i> 
                 <a href="mailto:rajosvahmanou@gmail.com">rajosvahmanou@gmail.com</a>
                 &nbsp; | &nbsp;
                 <i class="fas fa-phone"></i> 
                 <a href="tel:+261388338001">038 83 380 01</a>
+                
+                
+
             </p>
         </div>
     </div>
@@ -1485,6 +1542,10 @@ document.addEventListener('keydown', (e) => {
             treeWrapper.scrollLeft = (treeWrapper.scrollWidth - treeWrapper.clientWidth) / 2;
             treeWrapper.scrollTop = (treeWrapper.scrollHeight - treeWrapper.clientHeight) / 2;
         }, 100);
+function closeSimpleModal() {
+    document.getElementById('simpleModal').style.display = 'none';
+}
+
     </script>
 
 
@@ -1582,5 +1643,20 @@ document.addEventListener('keydown', (e) => {
         </div>
     </div>
 </div>
+
+
+<!-- MODALE MESSAGE SIMPLE -->
+<div id="simpleModal">
+    <div class="simpleModalContent">
+        <h2>⚠️ Version bêta</h2>
+            <p>
+                Cette application est encore en cours de développement.
+                Les informations peuvent être incomplètes.<br><br>
+                Pour toute <strong>ajout</strong> ou <strong>modification</strong> d’informations, merci de me contacter.
+            </p>
+        <button onclick="closeSimpleModal()">OK</button>
+    </div>
+</div>
+
 </body>
 </html>
