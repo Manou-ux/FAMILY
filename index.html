@@ -1055,6 +1055,19 @@ const memberDatabase = {
         notes: 'Ancêtre fondateur de la famille RAJOSVAH. Arrivé dans la région au milieu du 19ème siècle.'
         
     },
+    'RAHORIA': { // ← AJOUTEZ CE MEMBRE
+        nom: 'RAHORIA',
+        prenom: '',
+        sexe: 'Femme',
+        naissance: '1855',
+        lieuNaissance: 'Madagascar',
+        deces: '1925',
+        profession: 'Agricultrice',
+        conjoint: 'RAJOSVAH',
+        enfants: ['RAJOSVAH Joseph', 'RAJAONA', 'RAMARIARIVONY', 'RAVONIMIARANA'],
+        parents: [],
+        notes: 'Épouse de RAJOSVAH, mère de la famille.'
+    },
     'RAJOSVAH Joseph': {
         nom: 'RAJOSVAH',
         prenom: 'Joseph',
@@ -1067,6 +1080,19 @@ const memberDatabase = {
         enfants: ['RASOAVEROMANANA Christine', 'RAMANANDRAIBE Justine', 'RAJOSVAH Felix', 'RASOAVOLOLONA Hilde', 'RAKOTONDRAINIBE Frank', 'RASOAVOLOLONA Horia', 'RAKOTOBE Joseph'],
         parents: ['RAJOSVAH', 'RAHORIA'],
         notes: 'Premier fils de RAJOSVAH. A développé le commerce familial.'
+    },
+    'RAZOELINA': { // ← AJOUTEZ CE MEMBRE
+        nom: 'RAZOELINA',
+        prenom: '',
+        sexe: 'Femme',
+        naissance: '1885',
+        lieuNaissance: 'Madagascar',
+        deces: '1960',
+        profession: 'Commerçante',
+        conjoint: 'RAJOSVAH Joseph',
+        enfants: ['RASOAVEROMANANA Christine', 'RAMANANDRAIBE Justine', 'RAJOSVAH Felix', 'RASOAVOLOLONA Hilde', 'RAKOTONDRAINIBE Frank', 'RASOAVOLOLONA Horia', 'RAKOTOBE Joseph'],
+        parents: [],
+        notes: 'Épouse de RAJOSVAH Joseph.'
     },
     'RAJOSVAH Felix': {
         nom: 'RAJOSVAH',
@@ -1081,6 +1107,19 @@ const memberDatabase = {
         parents: ['RAJOSVAH Joseph', 'RAZOELINA'],
         notes: 'Enseignant respecté dans sa communauté. A eu 9 enfants.'
     },
+    'RALIMANANA Helène': {
+        nom: 'RALIMANANA',
+        prenom: 'Helène',
+        sexe: 'Femme',
+        naissance: '1915',
+        lieuNaissance: 'Madagascar',
+        deces: '1990',
+        profession: 'Enseignante',
+        conjoint: 'RAJOSVAH Felix',
+        enfants: ['RAZAFIMBOAHANGY Perle', 'RAVOAHANGY Perline', 'ANDRIAMANALINA Joseph', 'RAHARIMANANA Félicie', 'RAZANAMAMPIONONA Florine', 'ANDRIANAIVO Felix Rajosvah', 'ANDRIAMANALINA Jean Joseph', 'RAKOTONIRAINY Andrianandrasana', 'RAMANAMIHAJA Josephine'],
+        parents: [],
+        notes: 'Épouse de RAJOSVAH Felix.'
+    },
     'ANDRIANAIVO Felix Rajosvah': {
         nom: 'ANDRIANAIVO',
         prenom: 'Felix Rajosvah',
@@ -1092,7 +1131,22 @@ const memberDatabase = {
         conjoint: 'RASOAMAZAVANIRINA Romaine',
         enfants: ['RAJOSVAH Irina Hasimampionona', 'RAJOSVAH Manohisoa Hasimandimby', 'RAJOSVAH Todisoa Hasimpifaliana'],
         parents: ['RAJOSVAH Felix', 'RALIMANANA Helène'],
-        notes: 'Ingénieur genie chimique et entrepreneur.'
+        notes: 'Ingénieur genie chimique et entrepreneur.',
+        photo: 'photos/dada.jpg'
+    },
+    'RASOAMAZAVANIRINA Romaine': {
+        nom: 'RASOAMAZAVANIRINA',
+        prenom: 'Romaine',
+        sexe: 'Femme',
+        naissance: '1968',
+        lieuNaissance: 'Fandriana',
+        deces: '',
+        profession: 'Commercent',
+        conjoint: 'ANDRIANAIVO Felix Rajosvah',
+        enfants: ['RAJOSVAH Irina Hasimampionona', 'RAJOSVAH Manohisoa Hasimandimby', 'RAJOSVAH Todisoa Hasimpifaliana'],
+        parents: ['Mamasoa', 'Indisponible'],
+        notes: 'Avy eny Andidy.',
+        photo: 'photos/Romaine.jpg'
     },
     'RAJOSVAH Irina Hasimampionona': {
         nom: 'RAJOSVAH',
@@ -1105,7 +1159,8 @@ const memberDatabase = {
         conjoint: '',
         enfants: [],
         parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
-        notes: 'Etudie au Faculté de Medecine Andrainjato Fianarantsoa.'
+        notes: 'Etudie au Faculté de Medecine Andrainjato Fianarantsoa.',
+        photo: 'photos/irina.jpg'
     },
     'RAJOSVAH Manohisoa Hasimandimby': {
         nom: 'RAJOSVAH',
@@ -1132,7 +1187,8 @@ const memberDatabase = {
         conjoint: '',
         enfants: [],
         parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
-        notes: 'Etudie a INTH Antananarivo.'
+        notes: 'Etudie a INTH Antananarivo.',
+        photo: 'photos/fy.jpg'
     }
 };
 
@@ -1166,7 +1222,33 @@ function openModal(memberName) {
     document.getElementById('modalDeces').textContent = member.deces || 'En vie';
     document.getElementById('modalProfession').textContent = member.profession || 'Non renseignée';
     document.getElementById('modalStatut').textContent = member.conjoint ? 'Marié(e)' : 'Célibataire';
-    document.getElementById('modalConjoint').textContent = member.conjoint || 'Aucun';
+// Conjoint - version cliquable
+const conjointContainer = document.getElementById('modalConjointContainer');
+conjointContainer.innerHTML = '';
+
+if (member.conjoint) {
+    const conjointTag = document.createElement('div');
+    conjointTag.className = 'family-member-tag';
+    conjointTag.textContent = member.conjoint;
+    
+    // Déterminer le genre du conjoint pour le style
+    const conjointData = memberDatabase[member.conjoint];
+    if (conjointData) {
+        conjointTag.classList.add(conjointData.sexe === 'Homme' ? 'male' : 'female');
+    } else {
+        // Par défaut, on suppose l'opposé du membre actuel
+        conjointTag.classList.add(member.sexe === 'Homme' ? 'female' : 'male');
+    }
+    
+    conjointTag.onclick = (e) => {
+        e.stopPropagation(); // Empêche la fermeture de la modale
+        openModal(member.conjoint);
+    };
+    
+    conjointContainer.appendChild(conjointTag);
+} else {
+    conjointContainer.innerHTML = '<span>Aucun conjoint</span>';
+}
     document.getElementById('modalNotes').textContent = member.notes || 'Aucune note disponible.';
     
     // Enfants
@@ -1242,9 +1324,31 @@ function closeModal() {
 }
 
 function getDefaultMemberInfo(memberName) {
-    // Crée des informations par défaut basées sur le nom
-    const isMale = memberName.includes('♂') || !memberName.includes('♀');
-    const hasSpouse = memberName.includes('Marié');
+    // Chercher dans l'arbre pour trouver le conjoint
+    const memberCard = Array.from(document.querySelectorAll('.member')).find(member => 
+        member.querySelector('strong').textContent === memberName
+    );
+    
+    let conjoint = '';
+    let isMale = true;
+    let hasSpouse = false;
+    
+    if (memberCard) {
+        // Détecter le genre depuis la carte
+        isMale = memberCard.classList.contains('male');
+        
+        // Détecter le conjoint depuis la carte
+        const spouseElement = memberCard.querySelector('.spouse');
+        if (spouseElement) {
+            const spouseText = spouseElement.textContent;
+            // Extraire le nom du conjoint (amélioré)
+            const match = spouseText.match(/Marié à ([^♀♂]+)/);
+            if (match) {
+                conjoint = match[1].trim();
+                hasSpouse = true;
+            }
+        }
+    }
     
     return {
         nom: memberName.split(' ')[0],
@@ -1254,7 +1358,7 @@ function getDefaultMemberInfo(memberName) {
         lieuNaissance: 'Madagascar',
         deces: '',
         profession: 'Non renseignée',
-        conjoint: hasSpouse ? 'Conjoint(e)' : '',
+        conjoint: conjoint, // Utilise le conjoint détecté
         enfants: [],
         parents: [],
         notes: 'Les informations détaillées de cette personne ne sont pas encore disponibles dans la base de données.'
@@ -1369,10 +1473,14 @@ document.addEventListener('keydown', (e) => {
                 <div class="info-section">
                     <h3><i class="fas fa-heart"></i> Vie familiale</h3>
                     <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Conjoint(e)</span>
-                            <span class="info-value" id="modalConjoint">RAHORIA</span>
-                        </div>
+<div class="info-item">
+    <span class="info-label">Conjoint(e)</span>
+    <div class="info-value">
+        <div class="family-connections" id="modalConjointContainer">
+            <!-- Rempli dynamiquement -->
+        </div>
+    </div>
+</div>
                         <div class="info-item">
                             <span class="info-label">Enfants</span>
                             <div class="info-value">
