@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbre Généalogique Famille RAJOSVAH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d3748;
+            --accent-color: #d69e2e;
+            --accent-hover: #b7791f;
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+            --line-color: #a0aec0;
+            --male-color: #3182ce;
+            --female-color: #d53f8c;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .title-container {
+            text-align: center;
+        }
+
+        .title-container h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .title-container .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            font-weight: 300;
+        }
+
+        /* --- SECTION RECHERCHE --- */
+        .search-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .search-icon {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .search-container input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            outline: none;
+            width: 100%;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* --- CONTENU PRINCIPAL --- */
+        .main-content {
+            flex: 1;
+            padding: 1rem;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            width: 100%;
+        }
+
+        .tree-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            min-height: 500px;
+        }
+
+        .tree-container {
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+            padding: 2rem;
+            min-width: max-content;
+            display: inline-block;
+        }
+
+        /* --- STRUCTURE ARBRE --- */
+        .tree {
+            display: inline-block;
+            min-width: max-content;
+        }
+
+        .tree ul {
+            padding-top: 30px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .tree li {
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 25px 4px 0 4px;
+            white-space: nowrap;
+        }
+
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 1.5px solid var(--line-color);
+            width: 50%;
+            height: 25px;
+        }
+        
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 1.5px solid var(--line-color);
+        }
+
+        .tree li:only-child::after, .tree li:only-child::before { display: none; }
+        .tree li:only-child { padding-top: 0; }
+        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+        .tree li:last-child::before { 
+            border-right: 1.5px solid var(--line-color);
+            border-radius: 0 5px 0 0;
+        }
+        .tree li:first-child::after { 
+            border-radius: 5px 0 0 0;
+        }
+
+        .tree ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 1.5px solid var(--line-color);
+            width: 0;
+            height: 25px;
+        }
+
+        /* --- CARTES MEMBRES --- */
+        .member {
+            border: 2px solid #e2e8f0;
+            padding: 0.8rem;
+            text-decoration: none;
+            color: var(--text-color);
+            display: inline-block;
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            min-width: 160px;
+            max-width: 180px;
+            box-shadow: var(--shadow);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 10;
+            transition: var(--transition);
+            cursor: pointer;
+            white-space: normal;
+        }
+
+        .member {
+            min-width: 160px;
+            max-width: 220px; /* légèrement plus large pour les noms longs */
+            width: auto;      /* s’adapte au contenu */
+            padding: 0.8rem;
+            text-align: center;
+        }
+
+
+        .gender-icon {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .male .gender-icon {
+            background: rgba(49, 130, 206, 0.1);
+            color: var(--male-color);
+        }
+
+        .female .gender-icon {
+            background: rgba(213, 63, 140, 0.1);
+            color: var(--female-color);
+        }
+
+        .member.male {
+            border-left: 4px solid var(--male-color);
+            background: linear-gradient(to right, rgba(49, 130, 206, 0.05), transparent);
+        }
+
+        .member.female {
+            border-left: 4px solid var(--female-color);
+            background: linear-gradient(to right, rgba(213, 63, 140, 0.05), transparent);
+        }
+
+        .member strong {
+            display: -webkit-box;
+            margin: 0.3rem 0;
+            color: var(--primary-color);
+            line-height: 1.2;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding-right: 25px;
+            word-break: normal; /* ne casse pas les mots */
+            white-space: normal; /* autorise le wrapping entre les mots */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical; /* nécessaire pour line-clamp */
+        }
+
+
+
+        .member-info {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .spouse {
+            font-size: 0.75rem;
+            color: #4a5568;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.4rem;
+            padding-top: 0.4rem;
+            font-style: italic;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: normal; /* ne casse pas les mots */
+            white-space: normal; /* autorise le wrapping entre les mots */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical; /* nécessaire pour line-clamp */
+        }
+
+        /* --- HIGHLIGHT --- */
+        .highlight {
+            background-color: #fff3cd !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.5), 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+            border-color: var(--accent-color) !important;
+            z-index: 100 !important;
+            position: relative;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.5), 0 8px 25px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 0 0 6px rgba(214, 158, 46, 0.3), 0 8px 25px rgba(0, 0, 0, 0.2); }
+            100% { box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.5), 0 8px 25px rgba(0, 0, 0, 0.2); }
+        }
+
+        /* --- CONTROLS --- */
+        .controls {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 1000;
+            background: white;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .controls button {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem;
+            cursor: pointer;
+            border-radius: var(--radius);
+            font-weight: 600;
+            color: var(--primary-color);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+        }
+
+        .controls button:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .zoom-info {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            z-index: 1000;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            margin: 0.2rem 0;
+        }
+
+
+/* --- MODALE --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: var(--radius) var(--radius) 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modal-gender-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+.modal-title {
+    flex: 1;
+}
+
+.modal-title h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modal-title .modal-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 0.25rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.modal-photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modal-photo {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border: 3px solid var(--card-bg);
+}
+
+.photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+    border-radius: var(--radius);
+    color: var(--text-color);
+    font-size: 4rem;
+}
+
+.modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-section {
+    background: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--accent-color);
+}
+
+.info-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-section h3 i {
+    color: var(--accent-color);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.family-connections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.family-member-tag {
+    background: var(--card-bg);
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.family-member-tag:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.family-member-tag.male {
+    border-left: 3px solid var(--male-color);
+}
+
+.family-member-tag.female {
+    border-left: 3px solid var(--female-color);
+}
+
+.photo-placeholder i {
+    font-size: 5rem;
+    color: var(--line-color);
+}
+
+.photo-placeholder.male i {
+    color: var(--male-color);
+    opacity: 0.3;
+}
+
+.photo-placeholder.female i {
+    color: var(--female-color);
+    opacity: 0.3;
+}
+
+/* Responsive pour la modale */
+@media (max-width: 768px) {
+    .modal-body {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .modal-photo {
+        max-width: 200px;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+    }
+    
+    .modal-title h2 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                gap: 0.8rem;
+            }
+
+            .search-section {
+                max-width: 90%;
+                padding: 0.8rem 1.2rem;
+            }
+
+            .main-content {
+                padding: 0.5rem;
+            }
+
+            .tree-container {
+                padding: 1rem;
+            }
+
+            .member {
+                min-width: 140px;
+                max-width: 150px;
+                padding: 0.6rem;
+            }
+
+            .member strong {
+                font-size: 0.85rem;
+            }
+
+            .controls {
+                bottom: 1rem;
+                right: 1rem;
+                flex-direction: row;
+            }
+
+            .zoom-info {
+                bottom: 1rem;
+                left: 1rem;
+            }
+
+            .tree li {
+                padding: 20px 3px 0 3px;
+            }
+
+            .tree li::before, .tree li::after {
+                height: 20px;
+            }
+
+            .tree ul {
+                padding-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tree-container {
+                padding: 0.5rem;
+            }
+
+            .member {
+                min-width: 120px;
+                max-width: 130px;
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .member strong {
+                font-size: 0.8rem;
+            }
+
+            .controls button {
+                width: 40px;
+                height: 40px;
+                padding: 0.5rem;
+            }
+
+            .tree li {
+                padding: 15px 2px 0 2px;
+            }
+
+            .tree li::before, .tree li::after {
+                height: 15px;
+            }
+        }
+
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-content">
+            <div class="title-container">
+                <h1>Arbre Généalogique</h1>
+                <div class="subtitle">Famille RAJOSVAH</div>
+            </div>
+            
+            <div class="search-section">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="memberSearch" placeholder="Rechercher un nom... (ex: RAJOSVAH, Félicie...)" onkeyup="searchMember()">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="tree-wrapper" id="treeWrapper">
+            <div class="tree-container" id="tree-container">
+                <div class="tree">
+                    <ul>
+                        <li>
+                            <div class="member male">
+                                <span class="gender-icon">♂</span>
+                                <strong>RAJOSVAH</strong>
+                                <div class="member-info">Ancêtre Fondateur</div>
+                                <div class="spouse">Marié à RAHORIA <span style="color:var(--female-color)">♀</span></div>
+                            </div>
+                            <ul>
+                                <!-- Structure de l'arbre existante -->
+                                <li>
+                                    <div class="member male">
+                                        <span class="gender-icon">♂</span>
+                                        <strong>RAJOSVAH Joseph</strong>
+                                        <div class="spouse">Marié à RAZOELINA <span style="color:var(--female-color)">♀</span></div>
+                                    </div>
+                                    <ul>
+                                        <li><div class="member female"><span class="gender-icon">♀</span><strong>RASOAVEROMANANA Christine</strong></div></li>
+                                        <li><div class="member female"><span class="gender-icon">♀</span><strong>RAMANANDRAIBE Justine</strong></div></li>
+                                        <li>
+                                            <div class="member male">
+                                                <span class="gender-icon">♂</span>
+                                                <strong>RAJOSVAH Felix</strong>
+                                                <div class="spouse">Marié à RALIMANANA Helène <span style="color:var(--female-color)">♀</span></div>
+                                            </div>
+                                            <ul>
+                                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAZAFIMBOAHANGY Perle</strong></div></li>
+                                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAVOAHANGY Perline</strong></div></li>
+                                                <li><div class="member male"><span class="gender-icon">♂</span><strong>ANDRIAMANALINA Joseph</strong></div></li>
+                                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAHARIMANANA Félicie</strong></div></li>
+                                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAZANAMAMPIONONA Florine</strong></div></li>
+                                                <li>
+                                                    <div class="member male">
+                                                        <span class="gender-icon">♂</span>
+                                                        <strong>ANDRIANAIVO Felix Rajosvah</strong>
+                                                        <div class="spouse">Marié à RASOAMAZAVANIRINA Romaine <span style="color:var(--female-color)">♀</span></div>
+                                                    </div>
+                                                    <ul>
+                                                        <li><div class="member female"><span class="gender-icon">♀</span><strong>RAJOSVAH Irina Hasimampionona</strong></div></li>
+                                                        <li><div class="member male"><span class="gender-icon">♀</span><strong>RAJOSVAH Manohisoa Hasimandimby</strong></div></li>
+                                                        <li><div class="member female"><span class="gender-icon">♂</span><strong>RAJOSVAH Todisoa Hasimpifaliana</strong></div></li>
+                                                    </ul>
+                                                </li>
+                                                <li><div class="member male"><span class="gender-icon">♂</span><strong>ANDRIAMANALINA Jean Joseph</strong></div></li>
+                                                <li><div class="member male"><span class="gender-icon">♂</span><strong>RAKOTONIRAINY Andrianandrasana</strong></div></li>
+                                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAMANAMIHAJA Josephine</strong></div></li>
+                                            </ul>
+                                        </li>
+                                        <li><div class="member female"><span class="gender-icon">♀</span><strong>RASOAVOLOLONA Hilde</strong></div></li>
+                                        <li><div class="member male"><span class="gender-icon">♂</span><strong>RAKOTONDRAINIBE Frank</strong></div></li>
+                                        <li><div class="member female"><span class="gender-icon">♀</span><strong>RASOAVOLOLONA Horia</strong></div></li>
+                                        <li><div class="member male"><span class="gender-icon">♂</span><strong>RAKOTOBE Joseph</strong></div></li>
+                                    </ul>
+                                </li>
+                                <li><div class="member male"><span class="gender-icon">♂</span><strong>RAJAONA</strong></div></li>
+                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAMARIARIVONY</strong></div></li>
+                                <li><div class="member female"><span class="gender-icon">♀</span><strong>RAVONIMIARANA</strong></div></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFO ZOOM -->
+        <div class="zoom-info" id="zoomInfo">Zoom: 100%</div>
+    </main>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <button onclick="zoomIn()" title="Zoom In (Ctrl + +)">
+            <i class="fas fa-search-plus"></i>
+        </button>
+        <button onclick="zoomOut()" title="Zoom Out (Ctrl + -)">
+            <i class="fas fa-search-minus"></i>
+        </button>
+        <button onclick="resetZoom()" title="Reset Zoom (Ctrl + 0)">
+            <i class="fas fa-sync-alt"></i>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Arbre Généalogique Famille RAJOSVAH © 2026</p>
+            <p>Utilisez la molette de la souris, les boutons +/- ou pincez pour zoomer</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- ZOOM SYSTEM ---
+        let zoom = 1;
+        const minZoom = 0.3;
+        const maxZoom = 3;
+        const zoomStep = 0.05; // Réduit la sensibilité
+        const treeContainer = document.getElementById('tree-container');
+        const treeWrapper = document.getElementById('treeWrapper');
+        const zoomInfo = document.getElementById('zoomInfo');
+
+        function applyZoom() {
+            treeContainer.style.transform = `scale(${zoom})`;
+            zoomInfo.textContent = `Zoom: ${Math.round(zoom * 100)}%`;
+        }
+
+        function zoomIn() {
+            if (zoom < maxZoom) {
+                zoom += zoomStep;
+                applyZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (zoom > minZoom) {
+                zoom -= zoomStep;
+                applyZoom();
+            }
+        }
+
+        function resetZoom() {
+            zoom = 1;
+            applyZoom();
+        }
+
+        // --- MOUSE WHEEL ZOOM (MOINS SENSIBLE) ---
+        let wheelTimeout;
+        treeWrapper.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                
+                // Délai pour éviter le zoom trop rapide
+                if (!wheelTimeout) {
+                    if (e.deltaY < 0) {
+                        zoomIn();
+                    } else {
+                        zoomOut();
+                    }
+                    
+                    wheelTimeout = setTimeout(() => {
+                        wheelTimeout = null;
+                    }, 100); // Délai de 100ms entre les zooms
+                }
+            }
+        });
+
+        // --- KEYBOARD SHORTCUTS ---
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case '+':
+                    case '=':
+                        e.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        e.preventDefault();
+                        zoomOut();
+                        break;
+                    case '0':
+                        e.preventDefault();
+                        resetZoom();
+                        break;
+                }
+            }
+        });
+
+        // --- TOUCH PINCH ZOOM ---
+        let initialDistance = 0;
+        let initialZoom = 1;
+        let lastPinch = 0;
+
+        treeWrapper.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                initialDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                initialZoom = zoom;
+                lastPinch = Date.now();
+                e.preventDefault();
+            }
+        });
+
+        treeWrapper.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                const now = Date.now();
+                if (now - lastPinch > 50) { // Limite à 20 FPS pour le pincement
+                    const currentDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    
+                    const scale = currentDistance / initialDistance;
+                    zoom = Math.max(minZoom, Math.min(maxZoom, initialZoom * scale));
+                    applyZoom();
+                    lastPinch = now;
+                }
+                e.preventDefault();
+            }
+        });
+
+// --- SEARCH SYSTEM ---
+function searchMember() {
+    let input = document.getElementById('memberSearch').value.toLowerCase().trim();
+    let members = document.querySelectorAll('.member');
+    let hasResults = false;
+    let firstResult = null;
+    
+    members.forEach(member => {
+        let name = member.querySelector('strong').textContent.toLowerCase();
+        if (input !== "" && name.includes(input)) {
+            member.classList.add('highlight');
+            hasResults = true;
+            
+            // Ajouter un événement de clic pour ouvrir la modale
+            member.onclick = () => {
+                openModal(member.querySelector('strong').textContent);
+            };
+            
+            if (!firstResult) {
+                firstResult = member;
+            }
+        } else {
+            member.classList.remove('highlight');
+        }
+    });
+    
+    // Scroll vers le premier résultat
+    if (firstResult) {
+        const rect = firstResult.getBoundingClientRect();
+        const treeRect = treeWrapper.getBoundingClientRect();
+        treeWrapper.scrollLeft += (rect.left - treeRect.left - treeRect.width/2 + rect.width/2);
+        treeWrapper.scrollTop += (rect.top - treeRect.top - treeRect.height/2 + rect.height/2);
+    }
+    
+    // Update search placeholder based on results
+    const searchInput = document.getElementById('memberSearch');
+    if (input !== "" && !hasResults) {
+        searchInput.style.borderColor = '#e53e3e';
+        searchInput.style.backgroundColor = 'rgba(229, 62, 62, 0.1)';
+    } else {
+        searchInput.style.borderColor = '';
+        searchInput.style.backgroundColor = '';
+    }
+}
+
+// --- BASE DE DONNÉES DES MEMBRES ---
+const memberDatabase = {
+    'RAJOSVAH': {
+        nom: 'RAJOSVAH',
+        prenom: '',
+        sexe: 'Homme',
+        naissance: '1850',
+        lieuNaissance: 'Madagascar',
+        deces: '1920',
+        profession: 'Agriculteur',
+        conjoint: 'RAHORIA',
+        enfants: ['RAJOSVAH Joseph', 'RAJAONA', 'RAMARIARIVONY', 'RAVONIMIARANA'],
+        parents: [],
+        notes: 'Ancêtre fondateur de la famille RAJOSVAH. Arrivé dans la région au milieu du 19ème siècle.',
+        photo: 'photos/rajosvah.jpg'
+    },
+    'RAJOSVAH Joseph': {
+        nom: 'RAJOSVAH',
+        prenom: 'Joseph',
+        sexe: 'Homme',
+        naissance: '1880',
+        lieuNaissance: 'Madagascar',
+        deces: '1950',
+        profession: 'Commerçant',
+        conjoint: 'RAZOELINA',
+        enfants: ['RASOAVEROMANANA Christine', 'RAMANANDRAIBE Justine', 'RAJOSVAH Felix', 'RASOAVOLOLONA Hilde', 'RAKOTONDRAINIBE Frank', 'RASOAVOLOLONA Horia', 'RAKOTOBE Joseph'],
+        parents: ['RAJOSVAH', 'RAHORIA'],
+        notes: 'Premier fils de RAJOSVAH. A développé le commerce familial.'
+    },
+    'RAJOSVAH Felix': {
+        nom: 'RAJOSVAH',
+        prenom: 'Felix',
+        sexe: 'Homme',
+        naissance: '1910',
+        lieuNaissance: 'Madagascar',
+        deces: '1985',
+        profession: 'Enseignant',
+        conjoint: 'RALIMANANA Helène',
+        enfants: ['RAZAFIMBOAHANGY Perle', 'RAVOAHANGY Perline', 'ANDRIAMANALINA Joseph', 'RAHARIMANANA Félicie', 'RAZANAMAMPIONONA Florine', 'ANDRIANAIVO Felix Rajosvah', 'ANDRIAMANALINA Jean Joseph', 'RAKOTONIRAINY Andrianandrasana', 'RAMANAMIHAJA Josephine'],
+        parents: ['RAJOSVAH Joseph', 'RAZOELINA'],
+        notes: 'Enseignant respecté dans sa communauté. A eu 9 enfants.'
+    },
+    'ANDRIANAIVO Felix Rajosvah': {
+        nom: 'ANDRIANAIVO',
+        prenom: 'Felix Rajosvah',
+        sexe: 'Homme',
+        naissance: '1945',
+        lieuNaissance: 'Madagascar',
+        deces: '',
+        profession: 'Ingénieur',
+        conjoint: 'RASOAMAZAVANIRINA Romaine',
+        enfants: ['RAJOSVAH Irina Hasimampionona', 'RAJOSVAH Manohisoa Hasimandimby', 'RAJOSVAH Todisoa Hasimpifaliana'],
+        parents: ['RAJOSVAH Felix', 'RALIMANANA Helène'],
+        notes: 'Ingénieur civil. Premier de la famille à avoir fait des études supérieures.'
+    },
+    'RAJOSVAH Irina Hasimampionona': {
+        nom: 'RAJOSVAH',
+        prenom: 'Irina Hasimampionona',
+        sexe: 'Femme',
+        naissance: '1970',
+        lieuNaissance: 'Antananarivo',
+        deces: '',
+        profession: 'Médecin',
+        conjoint: '',
+        enfants: [],
+        parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
+        notes: 'Médecin spécialiste. Vit actuellement à Paris.'
+    },
+    'RAJOSVAH Manohisoa Hasimandimby': {
+        nom: 'RAJOSVAH',
+        prenom: 'Manohisoa Hasimandimby',
+        sexe: 'Homme',
+        naissance: '1972',
+        lieuNaissance: 'Antananarivo',
+        deces: '',
+        profession: 'Avocate',
+        conjoint: '',
+        enfants: [],
+        parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
+        notes: 'Avocate internationale spécialisée en droits de l\'homme.'
+    },
+    'RAJOSVAH Todisoa Hasimpifaliana': {
+        nom: 'RAJOSVAH',
+        prenom: 'Todisoa Hasimpifaliana',
+        sexe: 'Femme',
+        naissance: '1975',
+        lieuNaissance: 'Antananarivo',
+        deces: '',
+        profession: 'Entrepreneur',
+        conjoint: '',
+        enfants: [],
+        parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
+        notes: 'Fondateur d\'une startup technologique à succès.'
+    }
+};
+
+// --- GESTION DES MODALES ---
+function openModal(memberName) {
+    const modal = document.getElementById('memberModal');
+    const member = memberDatabase[memberName] || getDefaultMemberInfo(memberName);
+    
+    // Mettre à jour les informations de la modale
+    document.getElementById('modalName').textContent = memberName;
+    document.getElementById('modalSubtitle').textContent = `${member.nom} ${member.prenom ? member.prenom : ''}`;
+    
+    // Genre
+    const genderIcon = document.getElementById('modalGenderIcon');
+    const sexeElement = document.getElementById('modalSexe');
+    if (member.sexe === 'Homme' || memberName.includes('♂')) {
+        genderIcon.textContent = '♂';
+        genderIcon.style.color = 'var(--male-color)';
+        genderIcon.style.background = 'rgba(49, 130, 206, 0.2)';
+        sexeElement.textContent = 'Homme';
+    } else {
+        genderIcon.textContent = '♀';
+        genderIcon.style.color = 'var(--female-color)';
+        genderIcon.style.background = 'rgba(213, 63, 140, 0.2)';
+        sexeElement.textContent = 'Femme';
+    }
+    
+    // Informations personnelles
+    document.getElementById('modalNaissance').textContent = member.naissance || 'Non renseignée';
+    document.getElementById('modalLieuNaissance').textContent = member.lieuNaissance || 'Non renseigné';
+    document.getElementById('modalDeces').textContent = member.deces || 'En vie';
+    document.getElementById('modalProfession').textContent = member.profession || 'Non renseignée';
+    document.getElementById('modalStatut').textContent = member.conjoint ? 'Marié(e)' : 'Célibataire';
+    document.getElementById('modalConjoint').textContent = member.conjoint || 'Aucun';
+    document.getElementById('modalNotes').textContent = member.notes || 'Aucune note disponible.';
+    
+    // Enfants
+    const enfantsContainer = document.getElementById('modalEnfants');
+    enfantsContainer.innerHTML = '';
+    if (member.enfants && member.enfants.length > 0) {
+        member.enfants.forEach(child => {
+            const tag = document.createElement('div');
+            tag.className = 'family-member-tag';
+            tag.textContent = child;
+            tag.onclick = () => openModal(child);
+            enfantsContainer.appendChild(tag);
+        });
+    } else {
+        enfantsContainer.innerHTML = '<span>Aucun enfant</span>';
+    }
+    
+    // Parents
+    const parentsContainer = document.getElementById('modalParents');
+    parentsContainer.innerHTML = '';
+    if (member.parents && member.parents.length > 0) {
+        member.parents.forEach(parent => {
+            const tag = document.createElement('div');
+            tag.className = 'family-member-tag';
+            tag.textContent = parent;
+            tag.onclick = () => openModal(parent);
+            parentsContainer.appendChild(tag);
+        });
+    } else {
+        parentsContainer.innerHTML = '<span>Parents inconnus</span>';
+    }
+    
+// Gestion de la photo
+const photoElement = document.getElementById('modalPhoto');
+const placeholder = document.getElementById('modalPhotoPlaceholder');
+
+if (member.photo) {
+    photoElement.src = member.photo;
+    photoElement.style.display = 'block';
+    placeholder.style.display = 'none';
+    
+    // Gestion des erreurs de chargement d'image
+    photoElement.onerror = function() {
+        console.error(`Photo non trouvée: ${member.photo}`);
+        photoElement.style.display = 'none';
+        placeholder.style.display = 'flex';
+        placeholder.innerHTML = '<i class="fas fa-user"></i>';
+    };
+} else {
+    photoElement.style.display = 'none';
+    placeholder.style.display = 'flex';
+    
+    // Personnaliser selon le sexe
+    placeholder.className = 'photo-placeholder';
+    if (member.sexe === 'Homme') {
+        placeholder.innerHTML = '<i class="fas fa-male"></i>';
+        placeholder.classList.add('male');
+    } else {
+        placeholder.innerHTML = '<i class="fas fa-female"></i>';
+        placeholder.classList.add('female');
+    }
+}
+    
+    // Ouvrir la modale
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const modal = document.getElementById('memberModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function getDefaultMemberInfo(memberName) {
+    // Crée des informations par défaut basées sur le nom
+    const isMale = memberName.includes('♂') || !memberName.includes('♀');
+    const hasSpouse = memberName.includes('Marié');
+    
+    return {
+        nom: memberName.split(' ')[0],
+        prenom: memberName.split(' ').slice(1).join(' '),
+        sexe: isMale ? 'Homme' : 'Femme',
+        naissance: 'Non renseignée',
+        lieuNaissance: 'Madagascar',
+        deces: '',
+        profession: 'Non renseignée',
+        conjoint: hasSpouse ? 'Conjoint(e)' : '',
+        enfants: [],
+        parents: [],
+        notes: 'Les informations détaillées de cette personne ne sont pas encore disponibles dans la base de données.'
+    };
+}
+
+// --- MEMBER CLICK EFFECT ---
+document.querySelectorAll('.member').forEach(member => {
+    member.addEventListener('click', function() {
+        const memberName = this.querySelector('strong').textContent;
+        openModal(memberName);
+        
+        // Effet de surbrillance temporaire
+        this.classList.add('highlight');
+        setTimeout(() => {
+            this.classList.remove('highlight');
+        }, 1000);
+    });
+});
+
+// Fermer la modale en cliquant à l'extérieur
+document.getElementById('memberModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Fermer la modale avec la touche Échap
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+
+
+
+        // --- INITIALIZE ---
+        applyZoom();
+        
+        // Ajustement automatique pour les noms longs
+        document.querySelectorAll('.member strong').forEach(name => {
+            if (name.textContent.length > 20) {
+                name.parentElement.style.minWidth = '180px';
+                name.parentElement.style.maxWidth = '200px';
+            }
+        });
+        
+        // Centrage initial
+        setTimeout(() => {
+            treeWrapper.scrollLeft = (treeWrapper.scrollWidth - treeWrapper.clientWidth) / 2;
+            treeWrapper.scrollTop = (treeWrapper.scrollHeight - treeWrapper.clientHeight) / 2;
+        }, 100);
+    </script>
+
+
+<!-- MODALE -->
+<div class="modal" id="memberModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-gender-icon" id="modalGenderIcon">♂</div>
+            <div class="modal-title">
+                <h2 id="modalName">Nom Prénom</h2>
+                <div class="modal-subtitle" id="modalSubtitle">Informations détaillées</div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-photo-container">
+                <div class="photo-placeholder" id="modalPhotoPlaceholder">
+                    <i class="fas fa-user"></i>
+                </div>
+                <img class="modal-photo" id="modalPhoto" alt="Photo" style="display: none;">
+                <div class="info-section">
+                    <h3><i class="fas fa-id-card"></i> Identité</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Sexe</span>
+                            <span class="info-value" id="modalSexe">Homme</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Statut marital</span>
+                            <span class="info-value" id="modalStatut">Marié(e)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-info">
+                <div class="info-section">
+                    <h3><i class="fas fa-info-circle"></i> Informations personnelles</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Date de naissance</span>
+                            <span class="info-value" id="modalNaissance">01/01/1900</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Lieu de naissance</span>
+                            <span class="info-value" id="modalLieuNaissance">Madagascar</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Date de décès</span>
+                            <span class="info-value" id="modalDeces">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Profession</span>
+                            <span class="info-value" id="modalProfession">Non renseignée</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3><i class="fas fa-heart"></i> Vie familiale</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Conjoint(e)</span>
+                            <span class="info-value" id="modalConjoint">RAHORIA</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Enfants</span>
+                            <div class="info-value">
+                                <div class="family-connections" id="modalEnfants">
+                                    <!-- Rempli dynamiquement -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Parents</span>
+                            <div class="info-value">
+                                <div class="family-connections" id="modalParents">
+                                    <!-- Rempli dynamiquement -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3><i class="fas fa-sticky-note"></i> Notes</h3>
+                    <p id="modalNotes">Aucune note disponible pour cette personne.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
