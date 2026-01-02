@@ -504,7 +504,7 @@
 .modal-photo,
 .photo-placeholder {
     width: 100%;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 4 / 5;
     border-radius: 6px;
     border: 1px solid #e5e7eb;
     background: #f9fafb;
@@ -882,7 +882,7 @@
                                                 <li><div class="member female"><strong>RAVOAHANGY Perline</strong></div></li>
                                                 <li><div class="member male"><strong>ANDRIAMANALINA Joseph</strong></div></li>
                                                 <li><div class="member female"><strong>RAHARIMANANA Félicie</strong></div></li>
-                                                <li><div class="member female"><strong>RAZANAMAMPIONONA Florine</strong></div></li>
+                                                <li><div class="member female"><strong>RAZANAMAMPIONONA Florine Hanitriniala</strong></div></li>
                                                 <li>
                                                     <div class="member male">
                                                         
@@ -1136,25 +1136,29 @@ const memberDatabase = {
         nom: 'RAJOSVAH',
         prenom: '',
         sexe: 'Homme',
-        naissance: '1850',
+        naissance: 'Non renseigné',
         lieuNaissance: 'Madagascar',
-        deces: '1920',
-        profession: 'Agriculteur',
+        deces: 'Non renseigné',
+        profession: 'Non renseigné',
+        statutMarital: 'Marié(e)',
         conjoint: 'RAHORIA',
         enfants: ['RAJOSVAH Joseph', 'RAJAONA', 'RAMARIARIVONY', 'RAVONIMIARANA'],
         parents: [],
-        notes: 'Ancêtre fondateur de la famille RAJOSVAH. Arrivé dans la région au milieu du 19ème siècle.'
+        notes: 'Ancêtre fondateur de la famille RAJOSVAH. Arrivé dans la région au milieu du 18ème siècle.'
+        
         
     },
     'RAHORIA': { // ← AJOUTEZ CE MEMBRE
         nom: 'RAHORIA',
         prenom: '',
         sexe: 'Femme',
-        naissance: '1855',
+        naissance: 'Non renseigné',
         lieuNaissance: 'Madagascar',
-        deces: '1925',
-        profession: 'Agricultrice',
+        deces: 'Non renseigné',
+        profession: 'Non renseigné',
+        statutMarital: 'Marié(e)',
         conjoint: 'RAJOSVAH',
+        statutMarital: 'Marié(e)',
         enfants: ['RAJOSVAH Joseph', 'RAJAONA', 'RAMARIARIVONY', 'RAVONIMIARANA'],
         parents: [],
         notes: 'Épouse de RAJOSVAH, mère de la famille.'
@@ -1163,14 +1167,16 @@ const memberDatabase = {
         nom: 'RAJOSVAH',
         prenom: 'Joseph',
         sexe: 'Homme',
-        naissance: 'inconnu',
+        naissance: 'Non renseigné',
         lieuNaissance: 'Miarinavaratra',
         deces: '1958',
         profession: 'Gouverneur',
+        statutMarital: 'Marié(e)',
         conjoint: 'RAZOELINA',
         enfants: ['RASOAVEROMANANA Christine', 'RAMANANDRAIBE Justine', 'RAJOSVAH Felix', 'RASOAVOLOLONA Hilde', 'RAKOTONDRAINIBE Frank', 'RASOAVOLOLONA Horia', 'RAKOTOBE Joseph'],
         parents: ['RAJOSVAH', 'RAHORIA'],
-        notes: 'Gouverneur local. A eu 7 enfants.'
+        notes: 'Gouverneur local. A eu 7 enfants.',
+        photo: 'photos/joseph.jpg'
     },
     'RAZOELINA': { // ← AJOUTEZ CE MEMBRE
         nom: 'RAZOELINA',
@@ -1180,10 +1186,12 @@ const memberDatabase = {
         lieuNaissance: 'Madagascar',
         deces: '1960',
         profession: 'Commerçante',
+        statutMarital: 'Marié(e)',
         conjoint: 'RAJOSVAH Joseph',
         enfants: ['RASOAVEROMANANA Christine', 'RAMANANDRAIBE Justine', 'RAJOSVAH Felix', 'RASOAVOLOLONA Hilde', 'RAKOTONDRAINIBE Frank', 'RASOAVOLOLONA Horia', 'RAKOTOBE Joseph'],
         parents: [],
-        notes: 'Épouse de RAJOSVAH Joseph.'
+        notes: 'Épouse de RAJOSVAH Joseph.',
+        photo: 'photos/razoelina.jpg'
     },
     'RAJOSVAH Felix': {
         nom: 'RAJOSVAH',
@@ -1192,11 +1200,13 @@ const memberDatabase = {
         naissance: '1910',
         lieuNaissance: 'Madagascar',
         deces: '1985',
-        profession: 'Enseignant',
+        profession: 'Non renseigné',
+        statutMarital: 'Marié(e)',
         conjoint: 'RALIMANANA Helène',
         enfants: ['RAZAFIMBOAHANGY Perle', 'RAVOAHANGY Perline', 'ANDRIAMANALINA Joseph', 'RAHARIMANANA Félicie', 'RAZANAMAMPIONONA Florine', 'ANDRIANAIVO Felix Rajosvah', 'ANDRIAMANALINA Jean Joseph', 'RAKOTONIRAINY Andrianandrasana', 'RAMANAMIHAJA Josephine'],
         parents: ['RAJOSVAH Joseph', 'RAZOELINA'],
-        notes: 'Enseignant respecté dans sa communauté. A eu 9 enfants.'
+        notes: 'Enseignant respecté dans sa communauté. A eu 9 enfants.',
+        photo: 'photos/dadabe.jpg'
     },
     'RALIMANANA Helène': {
         nom: 'RALIMANANA',
@@ -1205,11 +1215,58 @@ const memberDatabase = {
         naissance: '1915',
         lieuNaissance: 'Madagascar',
         deces: '1990',
-        profession: 'Enseignante',
+        profession: 'Non renseigné',
+        statutMarital: 'Marié(e)',
         conjoint: 'RAJOSVAH Felix',
         enfants: ['RAZAFIMBOAHANGY Perle', 'RAVOAHANGY Perline', 'ANDRIAMANALINA Joseph', 'RAHARIMANANA Félicie', 'RAZANAMAMPIONONA Florine', 'ANDRIANAIVO Felix Rajosvah', 'ANDRIAMANALINA Jean Joseph', 'RAKOTONIRAINY Andrianandrasana', 'RAMANAMIHAJA Josephine'],
         parents: [],
-        notes: 'Épouse de RAJOSVAH Felix.'
+        notes: 'Épouse de RAJOSVAH Felix.',
+        photo: 'photos/bebe.jpg'
+    },
+    'RAMANAMIHAJA Josephine': {
+        nom: 'RAMANAMIHAJA',
+        prenom: 'Josephine',
+        sexe: 'Femme',
+        naissance: '1970',
+        lieuNaissance: 'Fianaratsoa',
+        deces: '',
+        profession: 'Non renseigné',
+        statutMarital: 'Divorcé',
+        conjoint: 'Bernardin',
+        enfants: ['Villa', 'Areca', 'Yvann'],
+        parents: ['RAJOSVAH Felix', 'RALIMANANA Helène'],
+        notes: 'Miasa ao @commune',
+        photo: 'photos/fify.jpg'
+    },
+    'RAKOTONIRAINY Andrianandrasana': {
+        nom: 'RAKOTONIRAINY',
+        prenom: 'Andrianandrasana',
+        sexe: 'Homme',
+        naissance: 'Non renseigné',
+        lieuNaissance: 'Fianaratsoa',
+        deces: '',
+        profession: 'Non renseigné',
+        statutMarital: 'Divorcé',
+        conjoint: ['Estelle & Edwise'],
+        enfants: ['Narindra', 'Bolo', 'Norohasina','Aina', 'Josvah', 'Voary'],
+        parents: ['RAJOSVAH Felix', 'RALIMANANA Helène'],
+        notes: 'Entrepreneur.',
+        photo: 'photos/nira.jpg'
+    },
+    'RAZANAMAMPIONONA Florine Hanitriniala': {
+        nom: 'RAZANAMAMPIONONA',
+        prenom: 'Hanitriniala',
+        sexe: 'Femme',
+        naissance: 'Non renseigné',
+        lieuNaissance: 'Fianaratsoa',
+        deces: '',
+        profession: 'Non renseigné',
+        statutMarital: 'Veuf',
+        conjoint: 'Non renseigné',
+        enfants: ['Hery', 'Personne 2', 'Personne 3'],
+        parents: ['RAJOSVAH Felix', 'RALIMANANA Helène'],
+        notes: 'Non renseigné',
+        photo: 'photos/nala.jpg'
     },
     'ANDRIANAIVO Felix Rajosvah': {
         nom: 'ANDRIANAIVO',
@@ -1233,6 +1290,7 @@ const memberDatabase = {
         lieuNaissance: 'Fandriana',
         deces: '',
         profession: 'Commercent',
+        statutMarital: 'Marié(e)',
         conjoint: 'ANDRIANAIVO Felix Rajosvah',
         enfants: ['RAJOSVAH Irina Hasimampionona', 'RAJOSVAH Manohisoa Hasimandimby', 'RAJOSVAH Todisoa Hasimpifaliana'],
         parents: ['Mamasoa', 'Indisponible'],
@@ -1246,7 +1304,8 @@ const memberDatabase = {
         naissance: '2002',
         lieuNaissance: 'Antananarivo',
         deces: '',
-        profession: 'etudiante en médecine',
+        profession: 'Etudiante en médecine',
+        statutMarital: 'Célibataire',
         conjoint: '',
         enfants: [],
         parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
@@ -1261,6 +1320,7 @@ const memberDatabase = {
         lieuNaissance: 'Antananarivo',
         deces: '',
         profession: 'Etudiant en Informatique',
+        statutMarital: 'Célibataire',
         conjoint: '',
         enfants: [],
         parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
@@ -1275,6 +1335,7 @@ const memberDatabase = {
         lieuNaissance: 'Fandriana',
         deces: '',
         profession: 'Etudiante en Restauration',
+        statutMarital: 'Célibataire',
         conjoint: '',
         enfants: [],
         parents: ['ANDRIANAIVO Felix Rajosvah', 'RASOAMAZAVANIRINA Romaine'],
@@ -1312,7 +1373,9 @@ function openModal(memberName) {
     document.getElementById('modalLieuNaissance').textContent = member.lieuNaissance || 'Non renseigné';
     document.getElementById('modalDeces').textContent = member.deces || 'En vie';
     document.getElementById('modalProfession').textContent = member.profession || 'Non renseignée';
-    document.getElementById('modalStatut').textContent = member.conjoint ? 'Marié(e)' : 'Célibataire';
+    document.getElementById('modalStatut').textContent =
+        member.statutMarital || 'Non renseigné';
+
 // Conjoint - version cliquable
 const conjointContainer = document.getElementById('modalConjointContainer');
 conjointContainer.innerHTML = '';
@@ -1415,9 +1478,11 @@ function closeModal() {
 }
 
 function getDefaultMemberInfo(memberName) {
+    
     // Chercher dans l'arbre pour trouver le conjoint
     const memberCard = Array.from(document.querySelectorAll('.member')).find(member => 
         member.querySelector('strong').textContent === memberName
+        
     );
     
     let conjoint = '';
