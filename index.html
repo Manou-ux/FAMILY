@@ -311,7 +311,7 @@
             white-space: normal; /* autorise le wrapping entre les mots */
             overflow: hidden;
             text-overflow: ellipsis;
-            -webkit-box-orient: vertical; /* nécessaire pour line-clamp */
+            -webkit-box-orient:  vertical; /* nécessaire pour line-clamp */
         }
 
         /* --- HIGHLIGHT --- */
@@ -405,262 +405,203 @@
         }
 
 
-/* --- MODALE --- */
+/* =========================
+   MODALE PROFESSIONNELLE
+========================= */
+
 .modal {
-    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 2000;
+    inset: 0;
+    background: rgba(30, 41, 59, 0.55);
+    display: none;
     align-items: center;
     justify-content: center;
+    z-index: 3000;
     padding: 1rem;
 }
 
 .modal.active {
     display: flex;
-    animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
+/* CONTENEUR PRINCIPAL */
 .modal-content {
-    background: white;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    max-width: 800px;
-    width: 90%;
+    background: #ffffff;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 900px;
     max-height: 90vh;
-    overflow-y: auto;
-    animation: slideIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
 }
 
-@keyframes slideIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
+/* HEADER SOBRE */
 .modal-header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
-    padding: 1.5rem;
-    border-radius: var(--radius) var(--radius) 0 0;
-    position: relative;
+    background: #f8fafc;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1.25rem 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
 .modal-gender-icon {
-    font-size: 2rem;
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.2);
+    background: #e5e7eb;
     border-radius: 50%;
-}
-
-.modal-title {
-    flex: 1;
+    color: #374151;
 }
 
 .modal-title h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
+    color: #1f2937;
 }
 
-.modal-title .modal-subtitle {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    margin-top: 0.25rem;
+.modal-subtitle {
+    font-size: 0.8rem;
+    color: #6b7280;
 }
 
+/* BOUTON FERMER */
 .modal-close {
+    margin-left: auto;
     background: none;
     border: none;
-    color: white;
-    font-size: 1.5rem;
+    color: #6b7280;
+    font-size: 1.3rem;
     cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: var(--transition);
 }
 
 .modal-close:hover {
-    background: rgba(255, 255, 255, 0.2);
+    color: #111827;
 }
 
+/* CORPS */
 .modal-body {
-    padding: 2rem;
+    padding: 1.8rem;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 260px 1fr;
     gap: 2rem;
+    overflow-y: auto;
 }
 
+/* PHOTO */
 .modal-photo-container {
     display: flex;
     flex-direction: column;
+    gap: 1.2rem;
     align-items: center;
-    gap: 1rem;
 }
 
-.modal-photo {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    border: 3px solid var(--card-bg);
-}
-
+.modal-photo,
 .photo-placeholder {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
-    border-radius: var(--radius);
-    color: var(--text-color);
-    font-size: 4rem;
 }
 
-.modal-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.photo-placeholder i {
+    font-size: 3.5rem;
+    color: #9ca3af;
 }
 
+/* SECTIONS */
 .info-section {
-    background: var(--bg-color);
-    padding: 1.5rem;
-    border-radius: var(--radius);
-    border-left: 4px solid var(--accent-color);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.2rem;
+    background: #ffffff;
+}
+
+.info-section + .info-section {
+    margin-top: 1.2rem;
 }
 
 .info-section h3 {
-    color: var(--primary-color);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1f2937;
     margin-bottom: 1rem;
-    font-size: 1.1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .info-section h3 i {
-    color: var(--accent-color);
+    color: #6b7280;
 }
 
+/* INFOS */
 .info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
 }
 
-.info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
 .info-label {
-    font-size: 0.8rem;
-    color: var(--text-color);
-    opacity: 0.7;
-    font-weight: 500;
+    font-size: 0.7rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .info-value {
-    font-size: 1rem;
-    color: var(--text-color);
+    font-size: 0.95rem;
     font-weight: 600;
+    color: #111827;
 }
 
-.family-connections {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
+/* TAGS FAMILLE */
 .family-member-tag {
-    background: var(--card-bg);
-    border: 1px solid #e2e8f0;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: background 0.2s;
 }
 
 .family-member-tag:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
+    background: #e5e7eb;
+}
+.family-member-tag {
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.family-member-tag.male {
-    border-left: 3px solid var(--male-color);
+.family-member-tag:hover {
+    background: #f1f5f9;
+    border-color: #d69e2e;
+    color: #b7791f;
 }
 
-.family-member-tag.female {
-    border-left: 3px solid var(--female-color);
-}
 
-.photo-placeholder i {
-    font-size: 5rem;
-    color: var(--line-color);
-}
-
-.photo-placeholder.male i {
-    color: var(--male-color);
-    opacity: 0.3;
-}
-
-.photo-placeholder.female i {
-    color: var(--female-color);
-    opacity: 0.3;
-}
-
-/* Responsive pour la modale */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .modal-body {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        padding: 1.4rem;
     }
-    
-    .modal-photo {
-        max-width: 200px;
-    }
-    
-    .modal-header {
-        padding: 1rem;
-    }
-    
-    .modal-title h2 {
-        font-size: 1.2rem;
-    }
-    
-    .modal-body {
-        padding: 1.5rem;
-    }
-    
-    .info-grid {
-        grid-template-columns: 1fr;
+
+    .modal-photo-container {
+        max-width: 220px;
+        margin: auto;
     }
 }
+
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
@@ -865,6 +806,25 @@
     cursor: pointer;
     font-weight: 600;
 }
+
+/* Indice discret dans le titre */
+
+
+.info-hint {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+}
+
+.info-hint i {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
 
 
     </style>
@@ -1542,6 +1502,8 @@ document.addEventListener('keydown', (e) => {
             treeWrapper.scrollLeft = (treeWrapper.scrollWidth - treeWrapper.clientWidth) / 2;
             treeWrapper.scrollTop = (treeWrapper.scrollHeight - treeWrapper.clientHeight) / 2;
         }, 100);
+
+//pop-up modal
 function closeSimpleModal() {
     document.getElementById('simpleModal').style.display = 'none';
 }
@@ -1549,7 +1511,7 @@ function closeSimpleModal() {
     </script>
 
 
-<!-- MODALE -->
+<!-- MODALE PERSO-->
 <div class="modal" id="memberModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -1606,16 +1568,23 @@ function closeSimpleModal() {
                 </div>
                 
                 <div class="info-section">
-                    <h3><i class="fas fa-heart"></i> Vie familiale</h3>
+                    <h3><i class="fas fa-heart"></i> Vie familiale 
+                        <p class="info-hint">
+                            Cliquez sur un nom pour afficher sa fiche
+                            <i class="fas fa-info-circle"></i>
+                        </p>
+                    </h3>
+
+
                     <div class="info-grid">
-<div class="info-item">
-    <span class="info-label">Conjoint(e)</span>
-    <div class="info-value">
-        <div class="family-connections" id="modalConjointContainer">
-            <!-- Rempli dynamiquement -->
-        </div>
-    </div>
-</div>
+                        <div class="info-item">
+                            <span class="info-label">Conjoint(e)</span>
+                            <div class="info-value">
+                                <div class="family-connections" id="modalConjointContainer">
+                                    <!-- Rempli dynamiquement -->
+                                </div>
+                            </div>
+                        </div>
                         <div class="info-item">
                             <span class="info-label">Enfants</span>
                             <div class="info-value">
